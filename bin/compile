@@ -10,13 +10,14 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 VENDOR_DIR="$BUILD_DIR/vendor"
 INSTALL_DIR="$VENDOR_DIR/imagemagick"
-IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-7.1.0-35}"
+IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-6.9.12-58}"
+IMAGE_MAGICK_MAJOR_VERSION="${IMAGE_MAGICK_MAJOR_VERSION:-6}"
 CACHE_FILE="$CACHE_DIR/imagemagick-$IMAGE_MAGICK_VERSION.tar.gz"
 
 if [ ! -f $CACHE_FILE ]; then
   # install imagemagick
   IMAGE_MAGICK_DIR="ImageMagick-$IMAGE_MAGICK_VERSION"
-  IMAGE_MAGICK_REPOSITORY="https://github.com/ImageMagick/ImageMagick.git"
+  IMAGE_MAGICK_REPOSITORY="${IMAGE_MAGICK_REPOSITORY:-https://github.com/ImageMagick/ImageMagick6.git}"
 
   echo "-----> Cloning ImageMagick from $IMAGE_MAGICK_URL"
   git clone -b $IMAGE_MAGICK_VERSION $IMAGE_MAGICK_REPOSITORY $IMAGE_MAGICK_DIR | indent
@@ -75,5 +76,5 @@ ACTUAL_INSTALL_PATH="$HOME/vendor/imagemagick"
 mkdir -p $(dirname $PROFILE_PATH)
 echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$ACTUAL_INSTALL_PATH/lib:\$LD_LIBRARY_PATH:/usr/local/lib" >> $PROFILE_PATH
-echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH/etc/ImageMagick-7/" >> $PROFILE_PATH
+echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH/etc/ImageMagick-$IMAGE_MAGICK_MAJOR_VERSION/" >> $PROFILE_PATH
 echo "-----> Done updating environment variables. All set for ImageMagick."
